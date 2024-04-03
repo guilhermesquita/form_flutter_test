@@ -13,6 +13,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
           'Forms',
@@ -56,6 +57,9 @@ class _HomePageState extends State<HomePage> {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     formKey.currentState?.validate();
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                    }
                   },
                   icon: const Icon(Icons.save),
                   label: const Text('Save'),
@@ -66,7 +70,9 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 height: 40,
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    formKey.currentState?.reset();
+                  },
                   icon: const Icon(
                     Icons.replay_outlined,
                     color: Colors.white,
@@ -97,6 +103,7 @@ class CustomTextField extends StatelessWidget {
     final controller = TextEditingController();
 
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (text) {
         if (text == null || text.isEmpty) {
           return 'Please enter $label';
